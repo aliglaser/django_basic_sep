@@ -1,0 +1,45 @@
+{% load static from staticfiles %}
+{% load course_extras %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/layout.css' %}">
+	{% block static %}{% endblock %}
+</head>
+<body>
+	<div class="site-container">
+		<div>{% nav_courses_list %}</div>
+	<nav>
+		<a href="{% url 'home' %}">HOME</a>
+		<a href="{% url 'courses:course_list' %}">COURSES</a>
+		<section>
+			<form action="{% url 'courses:search' %}" method="GET">
+				<ul>
+					<li><input type="search" name="q"></li>
+					<li><button type="submit">Search</button></li>
+					
+				</ul>
+			</form>
+		</section>
+	</nav>
+	{% if messages %}
+		<div class="row">
+			<div>
+				{% for message in messages %}
+					{{ message }}
+					<a href="#">&times;</a>
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+	<p>Don't miss our latest course, {% newest_course %}</p>
+	{% block content %}{% endblock %}
+	</div>
+	<script src="{% static 'js/vendor/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
+        <script src="{% static 'js/foundation.min.js' %}"></script>
+        {% block javascript %}{% endblock %}
+</body>
+</html>

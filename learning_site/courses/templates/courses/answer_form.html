@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}New Answer for {{ question.prompt }}|{{ question.quiz.course.title }}{% endblock %}
+
+{% block content %}
+	<h1>Make a new Answer!</h1>
+	<form method="POST" action="">
+		{% csrf_token %}
+		{{ formset }}
+		<input type="submit" value="submit">
+	</form>
+{% endblock %}

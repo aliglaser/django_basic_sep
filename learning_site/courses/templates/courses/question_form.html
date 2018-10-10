@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}New Question for {{ quiz.title }}|{{ quiz.course.title }}{% endblock %}
+
+{% block content %}
+	<h1>Make a new Question!</h1>
+	<form method="POST" action="">
+		{% csrf_token %}
+		{{ form.as_p }}
+
+		{{ formset.management_form }}
+
+		<table>
+			<thead>
+				<tr>
+					<th style="width: 10%">Order</th>
+					<th style="width: 10%">Text</th>
+					<th style="width: 10%">Correct?</th>
+					<th style="width: 10%">Delete?</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for form in formset %}
+					<tr>
+						<td>{{ form.id }}{{ form.order }}</td>
+						<td>{{ form.text }}</td>
+						<td>{{ form.correct }}</td>
+						{% if form.instance.pk %}
+							<td>{{ form.DELETE }}</td>
+						{% else %}
+							<td></td>	
+						{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<input type="submit" value="submit">
+	</form>
+	{% if user.is_authenticated and form.instance.pk %}
+		<hr>
+		<a href="{% url 'courses:create_answer' question_pk=form.instance.pk %}">Add answer</a>
+	{% endif %}
+{% endblock %}

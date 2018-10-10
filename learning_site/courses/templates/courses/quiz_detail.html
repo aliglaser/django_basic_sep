@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% load course_extras %}
+
+
+{% block title %}{{ step.title }} - {{ step.course.title }}{% endblock %}
+
+{% block content %}
+	<h1><a href="{% url 'courses:course_detail' pk=step.course.pk %}">{{ step.course.title }}</a></h1>
+	<h2>{{ step.title }}</h2>
+	<ul>
+		{% for question in step.question_set.all %}
+			<li>
+				<h2>{{ question.prompt }}</h2>
+				{% for answer in question.answer_set.all %}
+					<div>{{ answer.text }}</div>
+				{% endfor %}
+				{% if user.is_authenticated %}
+					<a href="{% url 'courses:question_edit' quiz_pk=step.pk pk=question.pk %}">Edit</a>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	
+
+
+	{% if user.is_authenticated %}
+		<a href="{% url 'courses:create_question' quiz_pk=step.course.pk question_type='mc'%}">New Multiple Choice Question</a>
+		<a href="{% url 'courses:create_question' quiz_pk=step.course.pk question_type='tf'%}">New True False Question</a>
+		<a href="{% url 'courses:quiz_edit' course_pk=step.course.pk pk=step.pk %}">Edit Quiz</a>
+	{% endif %}	
+{% endblock %}
